@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>LucasTech | Portfólio</title>
+
+</head>
+
+<body>
+
+
+    <div class="particulas">
+
+    </div>
+
+
+
+    <nav class="navegacao">
+        <ul class="menu">
+            <li><a href="#inicio" class="menu-link">Início</a></li>
+            <li><a href="#sobre" class="menu-link">Sobre</a></li>
+            <li><a href="#projetos" class="menu-link">Projetos</a></li>
+            <li><a href="#contactos" class="menu-link">Contactos</a></li>
+        </ul>
+    </nav>
+
+
+    <main id="inicio" class="cabecalho">
+        <img src="./img/image4.jpg" alt="Minha Foto" class="foto-perfil">
+        <h1>Belmiro Luvumbo Francisco Lucas</h1>
+        <p class="cabecalho-sub-titulo">Desenvolvidor Front-End</p>
+    </main>
+
+
+    <section id="sobre" class="sobre">
+        <h2 class="sobre-titulo">Sobre Mim</h2>
+        <div class="sobre-caixa">
+            <p class="sobre-paragrafo">
+                Minha jornada como desenvolvedor front-end começou com a curiosidade em entender
+                como os sites funcionavam por trás das telas. No início, mergulhei em HTML e CSS,
+                criando páginas simples e experimentando cores, fontes e layouts. Com o tempo,
+                fui descobrindo o poder do JavaScript e de frameworks como o TailwindCSS, que
+                me ajudaram a transformar ideias em interfaces modernas, responsivas e dinâmicas.
+            </p>
+
+        </div>
+    </section>
+
+
+
+
+
+    <section id="projetos" class="projetos">
+        <h2 id="projetos-titulo" class="projetos-titulo">Projectos</h2>
+        <div class="projetos-caixa" id="listaProjetos">
+            <!-- Os projetos serão carregados via JSON -->
+        </div>
+    </section>
+
+    <section id="contactos" class="contactos">
+        <h2 class="contactos-titulo">Entre em contactos</h2>
+
+        <form class="formulario-contacto" id="formulario" onsubmit="enviarWhats(event)">
+            <div class="grupo-form">
+                <input id="nome" placeholder="Digite o seu nome" class="campo-form focus:outline-none" type="text"
+                    required>
+            </div>
+            <div class="grupo-form">
+                <textarea id="mensagem" rows="6" placeholder="Digite sua Mensagem" class="campo-form focus:outline-none"
+                    required></textarea>
+            </div>
+            <button type="submit" class="botao-form">Enviar WhatsApp</button>
+        </form>
+
+        <!-- Fallback: mostrar número e botão de copiar -->
+        <div class="fallback">
+            <div class="dica">
+                <p class="text-wrap">Se não conseguir abrir o WhatsApp, copie o número abaixo e envie a mensagem
+                    manualmente:</p>
+            </div>
+            <div
+                style="display:flex; flex-direction: column; justify-content: space-between; align-items:center; gap:10px; margin-top:5px;">
+                <span class="self-start"><strong>Contacto: </strong><span style="font-size: 1.1rem;"
+                        id="telefoneTexto"></span></span>
+                <button onclick="copiarNumero()" class="botao-form">Copiar Número</button>
+            </div>
+        </div>
+    </section>
+
+
+        <script>
+            let numeroWhats = ""; // vai receber o número do JSON
+
+            // Carregar conteúdo do JSON
+            fetch('conteudo.json')
+      .then(res => res.json())
+      .then(data => {
+                // Atualizar contacto
+                numeroWhats = data.contacto.replace(/\D/g, ""); // só números
+            document.getElementById("telefoneTexto").innerText = data.contacto;
+
+            // Atualizar projetos
+            const container = document.getElementById("listaProjetos");
+            container.innerHTML = "";
+        data.projetos.forEach(p => {
+          const card = `
+            <div class="projetos-card">
+                <img src="${p.imagem}" alt="${p.titulo}" class="projetos-imagem">
+                    <div class="caixa-textos-projeto">
+                        <h3 class="info-projetos">${p.titulo}</h3>
+                        <p class="paragrafo-projetos">${p.descricao}</p>
+                    </div>
+            </div>`;
+            container.innerHTML += card;
+        });
+      });
+
+            // Enviar mensagem no WhatsApp
+            function enviarWhats(event) {
+                event.preventDefault();
+            const nome = document.getElementById('nome').value.trim();
+            const mensagem = document.getElementById('mensagem').value.trim();
+
+            if (!nome || !mensagem) {
+                alert("Por favor, preencha todos os campos.");
+            return;
+           }
+
+            const text = `Olá, meu nome é ${nome}. \n${mensagem}`;
+            const mensFormatada = encodeURIComponent(text);
+
+            // Detectar se é celular ou PC
+            const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+
+            let url = "";
+            if (isMobile) {
+                url = `https://wa.me/${numeroWhats}?text=${mensFormatada}`;
+      } else {
+                url = `https://web.whatsapp.com/send?phone=${numeroWhats}&text=${mensFormatada}`;
+      }
+
+            window.open(url, '_blank');
+    }
+
+        // Função para copiar o número
+        function copiarNumero() {
+        const numero = document.getElementById("telefoneTexto").innerText;
+        navigator.clipboard.writeText(numero).then(() => {
+                alert("Número copiado com sucesso: " + numero);
+        }).catch(() => {
+                alert("Não foi possível copiar o número. Copie manualmente: " + numero);
+        });
+    }
+    </script>
+
+</body>
+
+</html>

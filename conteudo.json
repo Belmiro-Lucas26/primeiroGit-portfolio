@@ -1,0 +1,20 @@
+{
+  "contacto": "+244 942 416 134",
+  "projetos": [
+    {
+      "imagem": "./img/projeto1.png",
+      "titulo": "Lojas de Carros",
+      "descricao": "Loja virtual moderna com animações e design responsivo"
+    },
+    {
+      "imagem": "./img/projeto2.png",
+      "titulo": "Agência de Viagem",
+      "descricao": "Site de viagens com reservas modernas e design responsivo"
+    },
+    {
+      "imagem": "./img/projeto3.png",
+      "titulo": "MyCROSOFT",
+      "descricao": "Plataforma fictícia inspirada em grandes empresas de tecnologia"
+    }
+  ]
+}
